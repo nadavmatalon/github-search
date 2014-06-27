@@ -5,7 +5,7 @@
   </head>
   <body>
     <form id='add_profile'>
-      <input id='username' placeholder='Enter a Github username'>
+      <input id='username' placeholder='Enter a Github username' required>
       <button type='submit'>Load profile</button>
     </form>
 
@@ -51,13 +51,22 @@
       }
 
       $(document).ready(function(){
-        ['alexmakers', 'ecomba', 'painted'].forEach(function(username){
-          getProfile(username);
-        })
+        // ['alexmakers', 'ecomba', 'painted'].forEach(function(username){
+          // getProfile(username);
+        // })
 
         $('#add_profile').on('submit', function(event){
           event.preventDefault();
-          getProfile($('#username').val())
+          if ($('.profile')[0] != null) {
+            console.log("inside if");
+            $('.profile').first().fadeOut(function() {
+              $(this).remove();
+              getProfile($('#username').val());
+            });
+          } else {
+            console.log("inside else");
+            getProfile($('#username').val());
+          };
         });
       });
     </script>

@@ -1,14 +1,37 @@
-input, button {
-  font-size: 20px;
-  padding: 5px;
+
+body {
+  font-family: sans-serif;
 }
 
-input {
-  width: 510px;
+h1 {
+  font-size: 40px;
 }
 
 p {
   font-size: 18px;
+}
+
+form {
+  vertical-align: center;
+  margin-top: 20px;
+}
+#submit {
+  vertical-align: center;
+  width: 150px;
+  font-size: 18px;
+  padding-bottom: 7px;
+  padding-top: 4px;
+  margin-left: 20px;
+  border-radius: 4px;
+  color: black;
+  float: top;
+}
+
+#username {
+  vertical-align: center;
+  font-size: 22px;
+  width: 400px;
+  height: 38px;
 }
 
 .profile {

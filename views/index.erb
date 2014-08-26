@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <title>Github profiles</title>
+            <link href="./css/style.css" rel="stylesheet">
+            <meta charset="utf8">
+            <script src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
+            <script src='./javascript/mustache.js'></script> 
+            <% if false %>
+                <script src='//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js'></script>
+            <% end %>
+    </head>
+    <body>
+        <h1>Github Profile Search Engine</h1>
+        <form id='add_profile' valign="center">
+            <input id='username' placeholder='Enter a Github username' autofocus required>
+            <button id= 'submit' type='submit'>Load profile</button>
+        </form>
+        <img src='http://www.iab.net/extra/adquickref/spinnerLarge.gif' class='spinner'>
+        <div class='profile-container'>
+            <template id='profile-template'>
+                <div class="profile">
+                    <div class="left">
+                        <img src="{{ avatar_url }}">
+                    </div>
+                    <div class="right">
+                        <h3><a href="{{ html_url }}">{{ login }}</a></h3>
+                        <h4>Repos: {{ public_repos }}</h4>
+                        <h4>Followers: {{ followers }}</h4>
+                    </div>
+                    <br clear="all">
+                </div>
+            </template>
+            <p id="error_message"></p>
+        </div>
+    </body>
+
+    <script>
+    function getProfile(username) {
+        $('.spinner').show();
+            $.get('https://api.github.com/users/' + username + "?access_token=<%= ENV['GITHUB_TOKEN']%>", function(user) { 
+                var newProfile = Mustache.render($('#profile-template').html(), user);
+                $('.profile-container').fadeIn(200, function() {
+                    $(this).prepend(newProfile);
+                });
+                $('#error_message').text("");
+            }).error(function(){
+                $('#error_message').text("Sorry, there\'s no user called " + username);
+            }).always(function(){
+                $('#username').val('');
+                $('.spinner').hide();
+            });
+        };
+
+        $(document).ready(function() {
+            // ['zenspider', 'fff'].forEach(function(username){
+            //     getProfile(username);
+            // });
+            $('#add_profile').on('submit', function(event) {
+                event.preventDefault();
+                if ($('.profile')[0] != null) {
+                    $('.profile').first().fadeOut(200, function() {
+                        $(this).remove();
+                        <% sleep 1 %>
+                        getProfile($('#username').val());
+                    });
+                } else {
+                    getProfile($('#username').val());
+                };
+            });
+        });
+    </script>
+</html>
+

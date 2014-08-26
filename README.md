@@ -6,3 +6,5 @@ using jQuery functionality & Mustache rendering engine.
 The app searches for Github profiles according to their username and returns their
 avatar picture and a bit of information about their public repos and number of followers.
 
+
+

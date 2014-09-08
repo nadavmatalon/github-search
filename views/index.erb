@@ -1,62 +1,74 @@
 <html>
     <head>
-        <title>Github profiles</title>
-            <link href="./css/style.css" rel="stylesheet">
-            <meta charset="utf8">
-            <script src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
-            <script src='./javascript/mustache.js'></script> 
-            <% if false %>
-                <script src='//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js'></script>
-            <% end %>
+        <title>Github Search</title>
+        <link href="./css/style.css" rel="stylesheet">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
+        <script type="text/javascript" src='./javascript/mustache.js'></script> 
+        <% if false %>
+            <script type="text/javascript" src='http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js'></script>
+        <% end %>
     </head>
     <body>
-        <h1>Github Profile Search Engine</h1>
-        <form id='add_profile' valign="center">
-            <input id='username' placeholder='Enter a Github username' autofocus required>
-            <button id= 'submit' type='submit'>Load profile</button>
-        </form>
-        <img src='http://www.iab.net/extra/adquickref/spinnerLarge.gif' class='spinner'>
-        <div class='profile-container'>
-            <template id='profile-template'>
-                <div class="profile">
-                    <div class="left">
-                        <img src="{{ avatar_url }}">
+        <div class='main-body'>
+            <p class='page-title'>Github Profile Search Engine</p>
+            <div class='searchbox-container'> 
+                <form id='add_profile' valign="center">
+                    <input id='username' placeholder='Enter a Github username' autofocus required>
+                    <button id='submit' type='submit'>Submit</button>
+                </form>
+            </div>
+            <div class='spinner spinner-container'>
+                <img src='/images/loader-icon.gif' >
+            </div>
+            <div class='profile-container'>
+                <template id='profile-template'>
+                    <div class="profile">
+                        <div class="left">
+                            <img src="{{ avatar_url }}">
+                        </div>
+                        <div class="right">
+                            <p class='user-title'><a href="{{ html_url }}">{{ login }}</a></p>
+                            <span class='info-item'>User ID: {{ id }}</span>
+                            <div class='dot-container'>•</div>
+                            <span class='info-item'>Following: {{ following }}</span>
+                            <div class='dot-container'>•</div>
+                            <span class='info-item'>Followers: {{ followers }}</span><br/>
+                            <span class='info-item'>Public Repos: {{ public_repos }}</span>
+                            <div class='dot-container'>•</div>
+                            <span class='info-item'>Public Gists: {{ public_gists }}</span>
+                        </div>
                     </div>
-                    <div class="right">
-                        <h3><a href="{{ html_url }}">{{ login }}</a></h3>
-                        <h4>Repos: {{ public_repos }}</h4>
-                        <h4>Followers: {{ followers }}</h4>
-                    </div>
-                    <br clear="all">
-                </div>
-            </template>
-            <p id="error_message"></p>
+                </template>
+            </div>
+            <div class='system-massage-container'>
+                <p id='system-message'></p>
+            </div>
         </div>
     </body>
-
     <script>
-    function getProfile(username) {
-        $('.spinner').show();
-            $.get('https://api.github.com/users/' + username + "?access_token=<%= ENV['GITHUB_TOKEN']%>", function(user) { 
-                var newProfile = Mustache.render($('#profile-template').html(), user);
-                $('.profile-container').fadeIn(200, function() {
-                    $(this).prepend(newProfile);
-                });
-                $('#error_message').text("");
-            }).error(function(){
-                $('#error_message').text("Sorry, there\'s no user called " + username);
-            }).always(function(){
-                $('#username').val('');
-                $('.spinner').hide();
+        function getProfile(username) {
+            $('.spinner-container').fadeIn(20, function() {
+                $('#system-message').hide().text("");
             });
-        };
+                $.get('https://api.github.com/users/' + username + "?access_token=<%= ENV['GITHUB_TOKEN']%>", function(user) { 
+                   var newProfile = Mustache.render($('#profile-template').html(), user);
+                    $('.profile-container').fadeIn(200, function() {
+                        $('.spinner-container').hide();
+                        $(this).prepend(newProfile);
+                    });
+                }).error(function(){
+                    $('.spinner-container').hide();
+                    $('#system-message').show().text("Sorry, there\'s no user called " + username);
+                }).always(function(){
+                    $('#username').val('');
+                });
+            };
 
         $(document).ready(function() {
-            // ['zenspider', 'fff'].forEach(function(username){
-            //     getProfile(username);
-            // });
             $('#add_profile').on('submit', function(event) {
                 event.preventDefault();
+                $('#system-message').hide().text("");
                 if ($('.profile')[0] != null) {
                     $('.profile').first().fadeOut(200, function() {
                         $(this).remove();

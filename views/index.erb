@@ -28,7 +28,10 @@
                             <img src="{{ avatar_url }}">
                         </div>
                         <div class="right">
-                            <p class='user-title'><a href="{{ html_url }}">{{ login }}</a></p>
+                            <div class='user-title'>
+                                <a href="{{ html_url }}">{{ login }}</a>
+                                <div class="tooltip">Go to {{ login }}'s Github page</div>
+                            </div>
                             <span class='info-item'>User ID: {{ id }}</span>
                             <div class='dot-container'>•</div>
                             <span class='info-item'>Following: {{ following }}</span>

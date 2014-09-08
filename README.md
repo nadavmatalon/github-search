@@ -48,14 +48,27 @@ If a given search yields no results, the app shows an appropriate message.
 
 ##See it Live on Github
             
-A live version of the app can be found (and played!) at:
+A live demo of the app can be found at:
 
 [Github Search on Github-IO](http://nadavmatalon.github.io/github-search/)
+
+Please note that due to security reasons I couldn't use my personal 
+[Github API Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use)  
+for this demo and therefore the app will only serve __up to 60 requests per hour__ 
+(after it reaches this quota it will claim that it can't find usernames until the 
+timeout period is over).
 
 
 ##How to Run the App Locally
 
-Clone the repo to a local folder and run:
+To run this app you will need to clone the repo and then obtain a 
+[Github API Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use) 
+and store it under a local environment variable called: `GITHUB_TOKEN`.
+
+This `Access Token` will provide up to 5000 query requests per hour (but note that without it 
+the app won't work).
+
+Once this is done run:
 
 ```bash
 $ cd github-search
@@ -85,6 +98,4 @@ at all on __Safari__.
 ##License
 
 <p>Released under the <a href="http://www.opensource.org/licenses/MIT">MIT license</a>.</p>
-
-
 

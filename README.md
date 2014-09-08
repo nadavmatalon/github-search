@@ -48,7 +48,7 @@ If a given search yields no results, the app shows an appropriate message.
 
 ##See it Live on Github
             
-A live version of the app can be found (and played!) at:
+A live demo of the app can be found at:
 
 [Github Search on Github-IO](http://nadavmatalon.github.io/github-search/)
 

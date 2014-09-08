@@ -13,7 +13,7 @@
 
 ##App Screenshot
 
-<a href="public/images/github-search-screenshot.png">
+<a href="https://raw.githubusercontent.com/nadavmatalon/github-search/master/public/images/github-search-screenshot.png">
 	<img src="public/images/github-search-screenshot.png" />
 </a>
 

@@ -50,34 +50,38 @@
         function getProfile(username) {
             $('.spinner-container').fadeIn(20, function() {
                 $('#system-message').hide().text("");
-            });
                 $.get('https://api.github.com/users/' + username + "?access_token=<%= ENV['GITHUB_TOKEN']%>", function(user) { 
-                   var newProfile = Mustache.render($('#profile-template').html(), user);
-                    $('.profile-container').fadeIn(200, function() {
+                    $('.profile-container').fadeIn(350, function() {
+                        var newProfile = Mustache.render($('#profile-template').html(), user);
                         $('.spinner-container').hide();
                         $(this).prepend(newProfile);
                     });
-                }).error(function(){
+                }).error(function() {
                     $('.spinner-container').hide();
-                    $('#system-message').show().text("Sorry, there\'s no user called " + username);
-                }).always(function(){
+                    $('#system-message').show().text("Sorry, there\'s no user by this name");
+                }).always(function() {
                     $('#username').val('');
                 });
-            };
+            });
+        };
 
         $(document).ready(function() {
-            $('#add_profile').on('submit', function(event) {
-                event.preventDefault();
-                $('#system-message').hide().text("");
-                if ($('.profile')[0] != null) {
-                    $('.profile').first().fadeOut(200, function() {
-                        $(this).remove();
-                        <% sleep 1 %>
+            $('.main-body').fadeIn(400, function() {
+                $('#add_profile').on('submit', function(event) {
+                    event.preventDefault();
+                    $('#system-message').hide().text("");
+                    $('.profile-container').fadeOut(300);
+                    if ($('.profile')[0] != null) {
+                        $('.profile').first().fadeOut(350, function() {
+                            $(this).remove();
+                            <% sleep 1 %>
+                            getProfile($('#username').val());
+                        });
+                    } else {
                         getProfile($('#username').val());
-                    });
-                } else {
-                    getProfile($('#username').val());
-                };
+
+                    };
+                });
             });
         });
     </script>

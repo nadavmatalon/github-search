@@ -52,10 +52,21 @@ A live version of the app can be found (and played!) at:
 
 [Github Search on Github-IO](http://nadavmatalon.github.io/github-search/)
 
+Please note that for this demo I couldn't use the Github API key due to security reasons 
+and therefore the app will only serve up to 60 requests per hour (after it reaches this
+quota it will claim that it can't find the user name until the timeout period is over).
+
 
 ##How to Run the App Locally
 
-Clone the repo to a local folder and run:
+To run this app you will need to clone the repo and then obtain a 
+[Github API Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use) 
+and store it under a local environment variable called: `GITHUB_TOKEN`.
+
+This `Access Token` will provide up to 5000 query requests per hour (but note that without it 
+the app won't work).
+
+Once this is done run:
 
 ```bash
 $ cd github-search

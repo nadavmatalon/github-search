@@ -20,5 +20,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  sinatra
-  thin
+  sinatra (~> 1.4.5)
+  thin (~> 1.6.2)

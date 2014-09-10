@@ -28,6 +28,10 @@ and [Mustache](http://mustache.github.io/) functionality, as well as working wit
 [API](http://en.wikipedia.org/wiki/Application_programming_interface)s 
 ([Github](http://github.com) in this case).
 
+__Update (10.9.2014):__ Re-wrote the entire app with [Angular](https://angularjs.org/) 
+instead of [Mustache](http://mustache.github.io/) changed a bit of styling, and added 
+a custom [jQuery UI Toolitp](http://jqueryui.com/tooltip/).
+
 
 ##Functional Description
 

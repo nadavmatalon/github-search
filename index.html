@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang='en' ng-app='Angular'>
     <head>
         <title>Github Search</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script type="text/javascript" src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
-        <script type="text/javascript" src='http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js'></script>
+        <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+        <link rel='stylesheet' href='https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css'>
+        <script type='text/javascript' src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
+        <script type='text/javascript' src='https://code.jquery.com/ui/1.11.1/jquery-ui.js'></script>
+        <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js'></script>
         <style>
             body {
                 font-family: "Gotham Narrow SSm",sans-serif,Arial;
-                cursor: default;
+                cursor: default !important;
             }
 
             input {
                 text-decoration: none !important;
                 outline: none !important;
-                border: none !important;
                 box-shadow: none !important;
             }
 
@@ -48,32 +49,62 @@
                 margin-top: -4px;
             }
 
-            #submit {
-                width: 100px;
-                height: 36px;
-                font-size: 15.5px;
-                padding-bottom: 17px;
-                padding-top: 8px;
-                margin-left: 15px;
-                border-radius: 4px;
-                color: black;
-                vertical-align: top;
-                margin-top: 6px;
-                border: 1px solid rgb(100, 100, 100);
+            .username_input {
+                width: 390px;
+                height: 31px;
+                font-size: 18px;
+                border-radius: 2px;
+                margin-top: 8px;
+                padding-left: 4px;
+                padding-top: 2px;
+                font-weight: 300;
+                font-family: "Gotham Narrow SSm",sans-serif,Arial;
+                letter-spacing: 0.5px;
             }
 
-            #submit:hover {
+            .search-button {
+                width: 108px;
+                height: 39px;
+                font-size: 17px;
+                padding-bottom: 17px;
+                padding-top: 8px;
+                margin-left: 16px;
+                border-radius: 4px;
+                vertical-align: top;
+                margin-top: 8px;
+                border: 1px solid rgb(237, 237, 237);
+                outline: none !important;
+                background-color: rgb(0, 0, 0);
+                color: rgb(255, 255, 255);
+                font-weight: 100 !important;
+                letter-spacing: 0.5px;
+                font-family: "Gotham Narrow SSm",sans-serif,Arial;
+            }
+
+            .search-button:hover {
                 color: rgb(220, 114, 8);
                 cursor: default;
             }
 
-            #username {
-                width: 400px;
-                height: 34px;
-                font-size: 17px;
-                border-radius: 2px;
-                margin-top: 7px;
-                padding-left: 4px;
+            .profile-container {
+                margin-top: 12px;
+            }
+
+            .spinner-container {
+                height: 50px;
+                margin-top: 70px;
+                position: absolute;
+                margin-left: 325px;
+            }
+
+            .spinner-container img {
+                height: 15px;
+                width: 50px;
+                margin-top: 18px;
+            }
+
+            .spinner {
+                display: none;
             }
 
             .profile-container {
@@ -81,15 +112,14 @@
             }
 
             .profile {
-                display: inline-block;
-                background: #606c88; /* Old browsers */
-                background: -moz-linear-gradient(top,  #606c88 0%, #3f4c6b 100%); /* FF3.6+ */
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#606c88), color-stop(100%,#3f4c6b)); /* Chrome,Safari4+ */
-                background: -webkit-linear-gradient(top,  #606c88 0%,#3f4c6b 100%); /* Chrome10+,Safari5.1+ */
-                background: -o-linear-gradient(top,  #606c88 0%,#3f4c6b 100%); /* Opera 11.10+ */
-                background: -ms-linear-gradient(top,  #606c88 0%,#3f4c6b 100%); /* IE10+ */
-                background: linear-gradient(to bottom,  #606c88 0%,#3f4c6b 100%); /* W3C */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#606c88', endColorstr='#3f4c6b',GradientType=0 ); /* IE6-9 */
+                background: #606c88;
+                background: -moz-linear-gradient(top, #606c88 0%, #3f4c6b 100%);
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#606c88), color-stop(100%,#3f4c6b));
+                background: -webkit-linear-gradient(top, #606c88 0%,#3f4c6b 100%);
+                background: -o-linear-gradient(top, #606c88 0%,#3f4c6b 100%);
+                background: -ms-linear-gradient(top, #606c88 0%,#3f4c6b 100%);
+                background: linear-gradient(to bottom, #606c88 0%,#3f4c6b 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#606c88', endColorstr='#3f4c6b',GradientType=0);
                 width: 600px;
                 padding: 18px 20px 10px 20px;
                 border-radius: 12px;
@@ -97,11 +127,30 @@
                 margin-top: 21px;
                 height: 120px;
                 border: 1px solid rgb(237, 237, 237);
-                }
+                position: absolute;
+                margin-left: 28px;
+                display: none;
+            }
 
-            .profile a {
+            .avatar-image-container {
+                width: 110px;
+                float: left;
+                margin-top: 1px;
+                margin-bottom: 4px;
+            }
+
+            .avatar-image {
+                width: 100%;
+            }
+
+            .user-title {
+                margin-top: 6px;
+                margin-bottom: 6px;
+            }
+
+            .user-title-link {
                 display: inline-block;
-                color: #fff;
+                color: rgb(255, 255, 255);
                 text-decoration: none !important;
                 font-size: 30px;
                 letter-spacing: 0.5px;
@@ -109,30 +158,24 @@
                 margin-bottom: 2px;
             }
 
-            .profile a:hover {
+            .user-title-link:hover {
+                transition: color, 0.2s;
                 color: rgb(220, 114, 8);
-                cursor: default;
+                cursor: default !important;
             }
 
-            .profile .left {
-                width: 110px;
-                float: left;
-                margin-top: 1px;
-                margin-bottom: 4px;
-            }
-
-            .profile .right {
-                margin-left: 20px;
-                display: inline-block;
-            }
-
-            .profile img {
-                width: 100%;
-            }
-
-            .user-title {
-                margin-top: 6px;
-                margin-bottom: 6px;
+            .ui-tooltip {
+                border-radius: 2px !important;
+                text-transform: none !important;
+                border: 1 solid white !important;
+                font-family: "Gotham Narrow SSm",sans-serif,Arial !important;
+                background: rgb(0, 0, 0) !important;
+                font-weight: 300px !important;
+                font-size: 16px !important;
+                color: rgb(255, 255, 255) !important;
+                letter-spacing: 0.5px !important;
+                border: 1px solid rgb(237, 237, 237) !important;
+                opacity: 0.9 !important;
             }
 
             .info-item {
@@ -149,143 +192,109 @@
                 padding-bottom: 5px;
             }
 
-            .dot {
-                font-size: 20px;
-            }
-
             .system-massage-container {
                 color: rgb(255, 255, 255);
                 font-size: 19px;
                 letter-spacing: 0.5px;
                 font-weight: 300;
-                margin-top: 60px;
+                margin-top: 52px;
                 display: inline-block;
                 padding: 0px 24px 0px 24px;
             }
 
-            #system-message {
+            .system-message {
                 display: none;
-            }
-
-            .spinner-container {
-                height: 50px;
-                width: 100%;
-                display: inline-block;
-                margin-top: 66px;
-            }
-
-            .spinner-container img {
-                height: 15px;
-                width: 50px;
-                margin-top: 18px;
-            }
-
-            .spinner {
-                display: none;
-            }
-
-
-            .tooltip {
-                background-color: transparent;
-                color: rgb(255, 255, 255);
-                border-radius: 5px;
-                opacity: 0;
-                position: absolute;
-                -webkit-transition: opacity 0.5s;
-                -moz-transition: opacity 0.5s;
-                -ms-transition: opacity 0.5s;
-                -o-transition: opacity 0.5s;
-                transition: opacity 0.5s;
-                width: 400px;
-                margin-top: -77px;
-                font-size: 17px;
-                font-weight: 300;
-                letter-spacing: 0.5px;
-            }
-
-            .user-title:hover .tooltip {
-                opacity: 1;
             }
         </style>
     </head>
-    <body>
-       <div class='main-body'>
+    <body ng-controller='AngularController'>
+        <div class='main-body'>
             <p class='page-title'>Github Profile Search Engine</p>
             <div class='searchbox-container'> 
-                <form id='add_profile' valign="center">
-                    <input id='username' placeholder='Enter a Github username' autofocus required>
-                    <button id='submit' type='submit'>Submit</button>
-                </form>
+                <form ng-submit='loadUser()'>
+                    <input ng-model='username_input' type='text' class='username_input' placeholder='Github username...' autofocus >
+                    <button type='submit' class='search-button'>Search</button> 
+                </form> 
             </div>
             <div class='spinner spinner-container'>
-                <img src='images/loader-icon.gif' >
+                <img src='./images/loader-icon.gif' >
             </div>
             <div class='profile-container'>
-                <template id='profile-template'>
-                    <div class="profile">
-                        <div class="left">
-                            <img src="{{ avatar_url }}">
-                        </div>
-                        <div class="right">
-                            <div class='user-title'>
-                                <a href="{{ html_url }}">{{ login }}</a>
-                                <div class="tooltip">Go to {{ login }}'s Github page</div>
-                            </div>
-                            <span class='info-item'>User ID: {{ id }}</span>
-                            <div class='dot-container'>•</div>
-                            <span class='info-item'>Following: {{ following }}</span>
-                            <div class='dot-container'>•</div>
-                            <span class='info-item'>Followers: {{ followers }}</span><br/>
-                            <span class='info-item'>Public Repos: {{ public_repos }}</span>
-                            <div class='dot-container'>•</div>
-                            <span class='info-item'>Public Gists: {{ public_gists }}</span>
-                        </div>
+                <div class='profile'>
+                    <div class='avatar-image-container '>
+                        <img ng-src='{{ avatar }}' class='avatar-image' alt='user-avatar' />
                     </div>
-                </template>
+                    <div class='user-data'>
+                        <div class='user-title'>
+                            <a href='{{ user_url }}' title="Visit {{username}}'s Github page" class='user-title-link'>{{ username }}</a>
+                        </div>    
+                        <span class='info-item'>User ID: {{ user_id }}</span>
+                        <div class='dot-container'>•</div>
+                        <span class='info-item'>Following: {{ following }}</span>
+                        <div class='dot-container'>•</div>
+                        <span class='info-item'>Followers: {{ followers }}</span><br/>
+                        <span class='info-item'>Public Repos: {{ repos }}</span>
+                        <div class='dot-container'>•</div>
+                        <span class='info-item'>Public Gists: {{ gists }}</span>
+                    </div>
+                </div>
             </div>
-            <div class='system-massage-container'>
-                <p id='system-message'></p>
+           <div class='system-massage-container'>
+                <p class='system-message'></p>
             </div>
         </div>
     </body>
-    <script type="text/javascript">
-       function getProfile(username) {
-            $('.spinner-container').fadeIn(20, function() {
-                $('#system-message').hide().text("");
-                $.get('https://api.github.com/users/' + username, function(user) { 
-                    $('.profile-container').fadeIn(350, function() {
-                        var newProfile = Mustache.render($('#profile-template').html(), user);
-                        $('.spinner-container').hide();
-                        $(this).prepend(newProfile);
-                    });
-                }).error(function() {
-                    $('.spinner-container').hide();
-                    $('#system-message').show().text("Sorry, there\'s no user by this name");
-                }).always(function() {
-                    $('#username').val('');
-                });
+    <script>
+
+        angular.module('Angular', []);
+
+        function AngularController($scope, $http) {
+            angular.element(document).ready(function () {
+                $scope.loadUser = function() {
+                    if ($scope.username_input) {
+                        $('.profile').fadeOut(200, function() {
+                            $('.spinner-container').fadeIn(20, function() {
+                                $('.system-message').fadeOut(50).text("");
+                                $http.get('https://api.github.com/users/' + $scope.username_input)
+                                    .success(function(userData) {
+                                            $scope.avatar = userData.avatar_url;
+                                            $scope.user_id = userData.id;
+                                            $scope.following = userData.following;
+                                            $scope.followers = userData.followers;
+                                            $scope.repos = userData.public_repos;
+                                            $scope.gists = userData.public_gists;
+                                            $scope.username = userData.login;
+                                            $scope.user_url = userData.html_url;
+                                            $('.profile').fadeIn(200, function() {
+                                                $('.spinner-container').fadeOut(50);
+                                                $('.system-message').fadeOut(50).text('');
+                                            });
+                                    }).error(function(profileData) {
+                                        $('.spinner-container').fadeOut(20, function() {
+                                            $('.system-message').fadeIn(50).text('Sorry, could not find a user by that name');
+                                        });
+                                    }).finally(function() {
+                                        $scope.username_input = '';
+                                    });
+                            });
+                        });
+                    };
+                };
             });
         };
 
-        $(document).ready(function() {
-            $('.main-body').fadeIn(400, function() {
-                $('#add_profile').on('submit', function(event) {
-                    event.preventDefault();
-                    $('#system-message').hide().text("");
-                    $('.profile-container').fadeOut(300);
-                    if ($('.profile')[0] != null) {
-                        $('.profile').first().fadeOut(350, function() {
-                            $(this).remove();
-
-                            getProfile($('#username').val());
-                        });
-                    } else {
-                        getProfile($('#username').val());
-
-                    };
-                });
+        $(function() {
+            $('.user-title-link').tooltip({ 
+                position: { my: 'center top-54px', at: 'center center' }, 
+                show: { effect: 'fadeIn', duration: 200 },
+                hide: { effect: 'fadeOut', duration: 100 }
             });
         });
+
+        $(document).ready(function() {
+            $('.main-body').fadeIn(400);
+        });
+
     </script>
 </html>
 

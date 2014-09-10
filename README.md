@@ -94,11 +94,8 @@ This app has been tested with and supports the following browsers (though
 it should hopefully look decent in some other browsers as well):
 
 * __Google Chrome__ (36.0)
+* __Apple Safari__ (7.0.5)
 * __Mozilla Firefox__ (31.0)
-
-Please note that due to some obscure [bug](https://github.com/wycats/handlebars.js/issues/373) 
-relating to [Mustache](http://mustache.github.io/), the app does not currently work 
-at all on __Safari__.
 
 
 ##License

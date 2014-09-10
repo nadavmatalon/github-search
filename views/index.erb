@@ -1,92 +1,102 @@
-<html>
+<!DOCTYPE html>
+<html lang='en' ng-app='Angular'>
     <head>
         <title>Github Search</title>
-        <link href="./css/style.css" rel="stylesheet">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script type="text/javascript" src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
-        <script type="text/javascript" src='./javascript/mustache.js'></script> 
-        <% if false %>
-            <script type="text/javascript" src='http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js'></script>
-        <% end %>
+        <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+        <link rel='stylesheet' href="./css/style.css" >
+        <link rel='stylesheet' href='https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css'>
+        <script type='text/javascript' src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
+        <script type='text/javascript' src='https://code.jquery.com/ui/1.11.1/jquery-ui.js'></script>
+        <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js'></script>
     </head>
-    <body>
+    <body ng-controller='AngularController'>
         <div class='main-body'>
             <p class='page-title'>Github Profile Search Engine</p>
             <div class='searchbox-container'> 
-                <form id='add_profile' valign="center">
-                    <input id='username' placeholder='Enter a Github username' autofocus required>
-                    <button id='submit' type='submit'>Submit</button>
-                </form>
+                <form ng-submit='loadUser()'>
+                    <input ng-model='username_input' type='text' class='username_input' placeholder='Github username...' autofocus >
+                    <button type='submit' class='search-button'>Search</button> 
+                </form> 
             </div>
             <div class='spinner spinner-container'>
-                <img src='/images/loader-icon.gif' >
+                <img src='./images/loader-icon.gif' >
             </div>
             <div class='profile-container'>
-                <template id='profile-template'>
-                    <div class="profile">
-                        <div class="left">
-                            <img src="{{ avatar_url }}">
-                        </div>
-                        <div class="right">
-                            <div class='user-title'>
-                                <a href="{{ html_url }}">{{ login }}</a>
-                                <div class="tooltip">Go to {{ login }}'s Github page</div>
-                            </div>
-                            <span class='info-item'>User ID: {{ id }}</span>
-                            <div class='dot-container'>•</div>
-                            <span class='info-item'>Following: {{ following }}</span>
-                            <div class='dot-container'>•</div>
-                            <span class='info-item'>Followers: {{ followers }}</span><br/>
-                            <span class='info-item'>Public Repos: {{ public_repos }}</span>
-                            <div class='dot-container'>•</div>
-                            <span class='info-item'>Public Gists: {{ public_gists }}</span>
-                        </div>
+                <div class='profile'>
+                    <div class='avatar-image-container '>
+                        <img ng-src='{{ avatar }}' class='avatar-image' alt='user-avatar' />
                     </div>
-                </template>
+                    <div class='user-data'>
+                        <div class='user-title'>
+                            <a href='{{ user_url }}' title="Visit {{username}}'s Github page" class='user-title-link'>{{ username }}</a>
+                        </div>    
+                        <span class='info-item'>User ID: {{ user_id }}</span>
+                        <div class='dot-container'>•</div>
+                        <span class='info-item'>Following: {{ following }}</span>
+                        <div class='dot-container'>•</div>
+                        <span class='info-item'>Followers: {{ followers }}</span><br/>
+                        <span class='info-item'>Public Repos: {{ repos }}</span>
+                        <div class='dot-container'>•</div>
+                        <span class='info-item'>Public Gists: {{ gists }}</span>
+                    </div>
+                </div>
             </div>
-            <div class='system-massage-container'>
-                <p id='system-message'></p>
+           <div class='system-massage-container'>
+                <p class='system-message'></p>
             </div>
         </div>
     </body>
     <script>
-        function getProfile(username) {
-            $('.spinner-container').fadeIn(20, function() {
-                $('#system-message').hide().text("");
-                $.get('https://api.github.com/users/' + username + "?access_token=<%= ENV['GITHUB_TOKEN']%>", function(user) { 
-                    $('.profile-container').fadeIn(350, function() {
-                        var newProfile = Mustache.render($('#profile-template').html(), user);
-                        $('.spinner-container').hide();
-                        $(this).prepend(newProfile);
-                    });
-                }).error(function() {
-                    $('.spinner-container').hide();
-                    $('#system-message').show().text("Sorry, there\'s no user by this name");
-                }).always(function() {
-                    $('#username').val('');
-                });
+
+        angular.module('Angular', []);
+
+        function AngularController($scope, $http) {
+            angular.element(document).ready(function () {
+                $scope.loadUser = function() {
+                    if ($scope.username_input) {
+                        $('.profile').fadeOut(200, function() {
+                            $('.spinner-container').fadeIn(20, function() {
+                                $('.system-message').fadeOut(50).text("");
+                                $http.get('https://api.github.com/users/' + $scope.username_input + "?access_token=<%= ENV['GITHUB_TOKEN']%>")
+                                    .success(function(userData) {
+                                            $scope.avatar = userData.avatar_url;
+                                            $scope.user_id = userData.id;
+                                            $scope.following = userData.following;
+                                            $scope.followers = userData.followers;
+                                            $scope.repos = userData.public_repos;
+                                            $scope.gists = userData.public_gists;
+                                            $scope.username = userData.login;
+                                            $scope.user_url = userData.html_url;
+                                            $('.profile').fadeIn(200, function() {
+                                                $('.spinner-container').fadeOut(50);
+                                                $('.system-message').fadeOut(50).text('');
+                                            });
+                                    }).error(function(profileData) {
+                                        $('.spinner-container').fadeOut(20, function() {
+                                            $('.system-message').fadeIn(50).text('Sorry, could not find a user by that name');
+                                        });
+                                    }).finally(function() {
+                                        $scope.username_input = '';
+                                    });
+                            });
+                        });
+                    };
+                };
             });
         };
 
-        $(document).ready(function() {
-            $('.main-body').fadeIn(400, function() {
-                $('#add_profile').on('submit', function(event) {
-                    event.preventDefault();
-                    $('#system-message').hide().text("");
-                    $('.profile-container').fadeOut(300);
-                    if ($('.profile')[0] != null) {
-                        $('.profile').first().fadeOut(350, function() {
-                            $(this).remove();
-                            <% sleep 1 %>
-                            getProfile($('#username').val());
-                        });
-                    } else {
-                        getProfile($('#username').val());
-
-                    };
-                });
+        $(function() {
+            $('.user-title-link').tooltip({ 
+                position: { my: 'center top-54px', at: 'center center' }, 
+                show: { effect: 'fadeIn', duration: 200 },
+                hide: { effect: 'fadeOut', duration: 100 }
             });
         });
+
+        $(document).ready(function() {
+            $('.main-body').fadeIn(400);
+        });
+
     </script>
 </html>
 

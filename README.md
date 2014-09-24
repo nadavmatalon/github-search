@@ -5,7 +5,7 @@
 * [App Screenshot](#app-screenshot)
 * [General Description](#general-description)
 * [Functional Description](#functional-description)
-* [See it Live on Github](#see-it-live-on-github)
+* [See it Live on Heroku](#see-it-live-on-heroku)
 * [How to Run the App Locally](#how-to-run-the-app-locally)
 * [Browsers](#browsers)
 * [License](#license)
@@ -33,6 +33,10 @@ __Update (10.9.2014):__ Re-wrote the entire app with [Angular](https://angularjs
 instead of [Mustache](http://mustache.github.io/) changed a bit of styling, and added 
 a custom [jQuery UI Toolitp](http://jqueryui.com/tooltip/).
 
+__Update (24.9.2014):__ Added 'Most Common Language' information to user profile
+by implementing the [OctoKit](https://github.com/octokit/octokit.rb) gem, 
+and deployed to [Heroku](http://heroku.com) to enable unlimited searches.
+
 
 ##Functional Description
 
@@ -45,6 +49,7 @@ by their username, and returns the user's avater image and data about their
 * User Followers
 * Number of Public Repos
 * Number of Public Gists
+* Most common language/s used in user's public repos.
 
 The users can use the hyper-linked username of a found user to redirect to that user's 
 [Github](http://github.com) page.
@@ -52,17 +57,15 @@ The users can use the hyper-linked username of a found user to redirect to that 
 If a given search yields no results, the app shows an appropriate message.
 
 
-##See it Live on Github
+##See it Live on Heroku
             
 A live demo of the app can be found at:
 
-[Github Search on Github-IO](http://nadavmatalon.github.io/github-search/)
+[Github Search on Heroku](http://makers-github-search.herokuapp.com/)
 
-Please note that due to security reasons I couldn't use my personal 
-[Github API Access Token](https://help.github.com/articles/creating-an-access-token-for-command-line-use)  
-for this demo and therefore the app will only serve __up to 60 requests per hour__ 
-(after it reaches this quota it will claim that it can't find usernames until the 
-timeout period is over).
+An earlier version of the app can be found on Github-io:
+
+[Github Search on Github-IO](http://nadavmatalon.github.io/github-search/)
 
 
 ##How to Run the App Locally

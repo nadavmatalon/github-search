@@ -1,5 +1,5 @@
 require "sinatra"
-require "Octokit"
+require "octokit"
 
 set :views, Proc.new {File.join(root, '..', "views")}
 set :public_folder, Proc.new {File.join(root, '..', "public")}

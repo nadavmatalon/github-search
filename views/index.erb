@@ -37,7 +37,10 @@
                         <span class='info-item'>Followers: {{ followers }}</span><br/>
                         <span class='info-item'>Public Repos: {{ repos }}</span>
                         <div class='dot-container'>•</div>
-                        <span class='info-item'>Public Gists: {{ gists }}</span>
+                        <span class='info-item'>Public Gists: {{ gists }}</span><br/>
+                        <div class='languages'>
+                            <div class='languages-info-item' id='languages_list'></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -47,6 +50,8 @@
         </div>
     </body>
     <script>
+ 
+        var languagesList = "";
 
         angular.module('Angular', []);
 
@@ -56,21 +61,30 @@
                     if ($scope.username_input) {
                         $('.profile').fadeOut(200, function() {
                             $('.spinner-container').fadeIn(20, function() {
+                                $("#languages_list").fadeOut(50).text("");
                                 $('.system-message').fadeOut(50).text("");
                                 $http.get('https://api.github.com/users/' + $scope.username_input + "?access_token=<%= ENV['GITHUB_TOKEN']%>")
                                     .success(function(userData) {
-                                            $scope.avatar = userData.avatar_url;
-                                            $scope.user_id = userData.id;
-                                            $scope.following = userData.following;
-                                            $scope.followers = userData.followers;
-                                            $scope.repos = userData.public_repos;
-                                            $scope.gists = userData.public_gists;
-                                            $scope.username = userData.login;
-                                            $scope.user_url = userData.html_url;
+                                        $("#languages_list").html("");
+                                        var current_username = $scope.username_input;
+                                        $scope.avatar = userData.avatar_url;
+                                        $scope.user_id = userData.id;
+                                        $scope.following = userData.following;
+                                        $scope.followers = userData.followers;
+                                        $scope.repos = userData.public_repos;
+                                        $scope.gists = userData.public_gists;
+                                        $scope.username = userData.login;
+                                        $scope.user_url = userData.html_url;
+                                        $.post("/username",
+                                            {
+                                                mode: current_username
+                                            }, function(data) {
+                                            $("#languages_list").html(data).fadeIn(10);
                                             $('.profile').fadeIn(200, function() {
                                                 $('.spinner-container').fadeOut(50);
                                                 $('.system-message').fadeOut(50).text('');
                                             });
+                                        },'text');
                                     }).error(function(profileData) {
                                         $('.spinner-container').fadeOut(20, function() {
                                             $('.system-message').fadeIn(50).text('Sorry, could not find a user by that name');

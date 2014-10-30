@@ -30,7 +30,7 @@ and [Mustache](http://mustache.github.io/) functionality, as well as working wit
 ([Github](http://github.com) in this case).
 
 __Update (10.9.2014):__ Re-wrote the entire app with [Angular](https://angularjs.org/) 
-instead of [Mustache](http://mustache.github.io/) changed a bit of styling, and added 
+instead of [Mustache](http://mustache.github.io/), changed a bit of styling, and added 
 a custom [jQuery UI Toolitp](http://jqueryui.com/tooltip/).
 
 __Update (24.9.2014):__ Added 'Most Common Language' information to user profile
@@ -81,7 +81,7 @@ Once this is done run:
 
 ```bash
 $ cd github-search
-$ bundle
+$ bundle install
 $ thin start
 ```
 
